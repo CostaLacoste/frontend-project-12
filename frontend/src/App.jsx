@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import * as yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import filter from 'leo-profanity'
 import {
   addChannel,
   fetchChatData,
@@ -19,6 +20,8 @@ import './App.css'
 
 const tokenKey = 'token'
 const usernameKey = 'username'
+
+filter.loadDictionary()
 
 const getToken = () => localStorage.getItem(tokenKey)
 const getUsername = () => localStorage.getItem(usernameKey)
@@ -201,7 +204,7 @@ const HomePage = () => {
                   }
                   onClick={() => dispatch(setCurrentChannel(channel.id))}
                 >
-                  # {channel.name}
+                  # {filter.clean(channel.name)}
                 </button>
                 {channel.removable && (
                   <div className="channel-actions">
@@ -248,14 +251,14 @@ const HomePage = () => {
         <section className="messages">
           <h2>
             {currentChannel
-              ? t('chat.titleWithChannel', { name: currentChannel.name })
+              ? t('chat.titleWithChannel', { name: filter.clean(currentChannel.name) })
               : t('chat.title')}
           </h2>
           <div className="messages-list">
             {selectedChannelMessages.map((message) => (
               <p key={message.id}>
                 <strong>{message.username}: </strong>
-                {message.body}
+                {filter.clean(message.body)}
               </p>
             ))}
           </div>
@@ -269,7 +272,7 @@ const HomePage = () => {
               await dispatch(
                 sendMessage({
                   token,
-                  body: body.trim(),
+                  body: filter.clean(body.trim()),
                   channelId: currentChannelId,
                   username,
                 }),
@@ -308,7 +311,7 @@ const HomePage = () => {
               }
 
               const resultAction = await dispatch(
-                addChannel({ token, name: name.trim() }),
+                addChannel({ token, name: filter.clean(name.trim()) }),
               )
               if (addChannel.fulfilled.match(resultAction)) {
                 toast.success(t('toast.channelCreated'))
@@ -370,7 +373,7 @@ const HomePage = () => {
                 renameChannel({
                   token,
                   channelId: renameModalChannel.id,
-                  name: name.trim(),
+                  name: filter.clean(name.trim()),
                 }),
               )
               if (renameChannel.fulfilled.match(resultAction)) {
