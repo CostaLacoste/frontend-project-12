@@ -1,3 +1,26 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-logo-link {
+  color: var(--text-h);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.logout-button {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
 .chat-page {
   display: flex;
   text-align: left;
@@ -25,14 +48,32 @@
   padding: 0;
 }
 
-.channel-button {
+.add-channel-button {
   width: 100%;
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  background: var(--accent-bg);
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.channel-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.channel-button {
+  flex-grow: 1;
   padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: transparent;
   color: var(--text-h);
-  margin-bottom: 8px;
   text-align: left;
   cursor: pointer;
 }
@@ -40,6 +81,46 @@
 .channel-button.active {
   background: var(--accent-bg);
   border-color: var(--accent-border);
+}
+
+.channel-actions {
+  position: relative;
+}
+
+.channel-menu-button {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.channel-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  min-width: 110px;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+}
+
+.channel-dropdown button {
+  padding: 8px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-h);
+}
+
+.channel-dropdown button:last-child {
+  border-bottom: 0;
 }
 
 .messages {
@@ -82,4 +163,58 @@
   background: var(--accent-bg);
   color: var(--text-h);
   cursor: pointer;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.modal-body {
+  width: 100%;
+  max-width: 420px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.modal-body h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+.modal-form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.modal-actions button {
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.form-error {
+  color: #d14343;
+  margin-top: 8px;
 }

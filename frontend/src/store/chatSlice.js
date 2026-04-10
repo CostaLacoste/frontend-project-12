@@ -83,6 +83,76 @@ export const sendMessage = createAsyncThunk(
   },
 )
 
+export const addChannel = createAsyncThunk(
+  'chat/addChannel',
+  async ({ token, name }, { rejectWithValue }) => {
+    try {
+      const response = await fetch('/api/v1/channels', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to add channel')
+      }
+
+      return await response.json()
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  },
+)
+
+export const renameChannel = createAsyncThunk(
+  'chat/renameChannel',
+  async ({ token, channelId, name }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`/api/v1/channels/${channelId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to rename channel')
+      }
+
+      return await response.json()
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  },
+)
+
+export const removeChannel = createAsyncThunk(
+  'chat/removeChannel',
+  async ({ token, channelId }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`/api/v1/channels/${channelId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to remove channel')
+      }
+
+      return { id: String(channelId) }
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  },
+)
+
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
@@ -115,6 +185,40 @@ const chatSlice = createSlice({
       })
       .addCase(sendMessage.rejected, (state, action) => {
         state.error = action.payload ?? 'Failed to send message'
+      })
+      .addCase(addChannel.fulfilled, (state, action) => {
+        state.channels.push(action.payload)
+        state.currentChannelId = action.payload.id
+      })
+      .addCase(addChannel.rejected, (state, action) => {
+        state.error = action.payload ?? 'Failed to add channel'
+      })
+      .addCase(renameChannel.fulfilled, (state, action) => {
+        const index = state.channels.findIndex(
+          (channel) => String(channel.id) === String(action.payload.id),
+        )
+        if (index !== -1) {
+          state.channels[index] = action.payload
+        }
+      })
+      .addCase(renameChannel.rejected, (state, action) => {
+        state.error = action.payload ?? 'Failed to rename channel'
+      })
+      .addCase(removeChannel.fulfilled, (state, action) => {
+        const removedId = String(action.payload.id)
+        state.channels = state.channels.filter(
+          (channel) => String(channel.id) !== removedId,
+        )
+        state.messages = state.messages.filter(
+          (message) => String(message.channelId) !== removedId,
+        )
+
+        if (String(state.currentChannelId) === removedId) {
+          state.currentChannelId = state.channels[0]?.id ?? null
+        }
+      })
+      .addCase(removeChannel.rejected, (state, action) => {
+        state.error = action.payload ?? 'Failed to remove channel'
       })
   },
 })
