@@ -16,6 +16,9 @@
     "url": "https://github.com/CostaLacoste/frontend-project-12/issues"
   },
   "homepage": "https://github.com/CostaLacoste/frontend-project-12#readme",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@hexlet/chat-server": "^2.0.4"
   }
