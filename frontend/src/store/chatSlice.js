@@ -1,5 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
+const extractList = (payload, key) => {
+  if (Array.isArray(payload)) {
+    return payload
+  }
+
+  if (Array.isArray(payload?.[key])) {
+    return payload[key]
+  }
+
+  return []
+}
+
+const extractItem = (payload, key) => payload?.[key] ?? payload
+
 const initialState = {
   channels: [],
   messages: [],
@@ -29,8 +43,8 @@ export const fetchChatData = createAsyncThunk(
       const messagesData = await messagesResponse.json()
 
       return {
-        channels: channelsData,
-        messages: messagesData,
+        channels: extractList(channelsData, 'channels'),
+        messages: extractList(messagesData, 'messages'),
       }
     } catch (error) {
       return rejectWithValue(error.message)
@@ -52,7 +66,8 @@ export const fetchMessages = createAsyncThunk(
         throw new Error('Failed to load messages')
       }
 
-      return await response.json()
+      const payload = await response.json()
+      return extractList(payload, 'messages')
     } catch (error) {
       return rejectWithValue(error.message)
     }
@@ -76,7 +91,8 @@ export const sendMessage = createAsyncThunk(
         throw new Error('Failed to send message')
       }
 
-      return await response.json()
+      const payload = await response.json()
+      return extractItem(payload, 'message')
     } catch (error) {
       return rejectWithValue(error.message)
     }
@@ -100,7 +116,8 @@ export const addChannel = createAsyncThunk(
         throw new Error('Failed to add channel')
       }
 
-      return await response.json()
+      const payload = await response.json()
+      return extractItem(payload, 'channel')
     } catch (error) {
       return rejectWithValue(error.message)
     }
@@ -124,7 +141,8 @@ export const renameChannel = createAsyncThunk(
         throw new Error('Failed to rename channel')
       }
 
-      return await response.json()
+      const payload = await response.json()
+      return extractItem(payload, 'channel')
     } catch (error) {
       return rejectWithValue(error.message)
     }
