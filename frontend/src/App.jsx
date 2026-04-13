@@ -617,7 +617,7 @@ const SignupPage = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="signup-username">{t('auth.username')}</label>
+              <label htmlFor="signup-username">{t('auth.signupUsername')}</label>
               <input
                 id="signup-username"
                 name="username"

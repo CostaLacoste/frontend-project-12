@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install:all": "make install",
+    "build": "make build",
+    "start": "make start",
+    "dev": "npm --prefix frontend run dev"
   },
   "repository": {
     "type": "git",
