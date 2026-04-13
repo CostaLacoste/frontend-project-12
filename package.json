@@ -20,7 +20,6 @@
     "node": "20.x"
   },
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4",
-    "start-server": "^0.0.4"
+    "@hexlet/chat-server": "^2.0.4"
   }
 }
