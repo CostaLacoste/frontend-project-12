@@ -442,6 +442,7 @@ const HomePage = () => {
               isSubmitting,
             }) => (
               <form className="modal-form" onSubmit={handleSubmit}>
+                <label htmlFor="renameChannelName">{t('modals.channelName')}</label>
                 <input
                   id="renameChannelName"
                   name="name"
