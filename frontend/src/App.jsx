@@ -232,7 +232,7 @@ const HomePage = () => {
             +
           </button>
           <ul>
-            {channels.map((channel) => (
+            {channels.map(channel => (
               <li key={channel.id} className="channel-item">
                 <button
                   type="button"
@@ -296,7 +296,7 @@ const HomePage = () => {
               : t('chat.title')}
           </h2>
           <div id="messages-box" className="messages-list" ref={messagesBoxRef}>
-            {selectedChannelMessages.map((message) => (
+            {selectedChannelMessages.map(message => (
               <p key={message.id}>
                 <strong>
                   {message.username}
