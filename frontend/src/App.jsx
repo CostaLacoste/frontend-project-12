@@ -207,6 +207,23 @@ const HomePage = () => {
     [channels, renameModalChannel?.name, t],
   )
 
+  const handleRemoveChannel = async (channel) => {
+    if (!token) {
+      return
+    }
+
+    const resultAction = await dispatch(
+      removeChannel({ token, channelId: channel.id }),
+    )
+
+    if (removeChannel.fulfilled.match(resultAction)) {
+      toast.success(t('toast.channelRemoved'))
+      return
+    }
+
+    toast.error(t('toast.loadingError'))
+  }
+
   useEffect(() => {
     if (!messagesBoxRef.current) {
       return
@@ -274,9 +291,9 @@ const HomePage = () => {
                         </button>
                         <button
                           type="button"
-                          onClick={() => {
-                            setRemoveModalChannel(channel)
+                          onClick={async () => {
                             setDropdownChannelId(null)
+                            await handleRemoveChannel(channel)
                           }}
                         >
                           {t('chat.remove')}
