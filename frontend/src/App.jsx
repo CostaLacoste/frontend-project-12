@@ -7,6 +7,7 @@ import * as yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import filter from 'leo-profanity'
+import { io } from 'socket.io-client'
 import {
   addChannel,
   fetchChatData,
@@ -131,6 +132,31 @@ const HomePage = () => {
 
     return () => {
       clearInterval(timerId)
+    }
+  }, [dispatch, token])
+
+  useEffect(() => {
+    if (!token) {
+      return undefined
+    }
+
+    const socket = io({ transports: ['websocket', 'polling'] })
+    const syncMessages = () => {
+      dispatch(fetchMessages(token))
+    }
+    const syncChat = () => {
+      dispatch(fetchChatData({ token, silent: true }))
+    }
+
+    socket.on('newMessage', syncMessages)
+    socket.on('newChannel', syncChat)
+    socket.on('removeChannel', syncChat)
+    socket.on('renameChannel', syncChat)
+    socket.on('renameMessage', syncMessages)
+    socket.on('removeMessage', syncMessages)
+
+    return () => {
+      socket.disconnect()
     }
   }, [dispatch, token])
 

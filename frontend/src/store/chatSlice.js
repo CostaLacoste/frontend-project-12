@@ -22,9 +22,18 @@ const initialState = {
   error: null,
 }
 
+const normalizeFetchArg = (arg) => {
+  if (typeof arg === 'string') {
+    return { token: arg, silent: false }
+  }
+
+  return { token: arg.token, silent: Boolean(arg.silent) }
+}
+
 export const fetchChatData = createAsyncThunk(
   'chat/fetchChatData',
-  async (token, { rejectWithValue }) => {
+  async (arg, { rejectWithValue }) => {
+    const { token } = normalizeFetchArg(arg)
     const headers = {
       Authorization: `Bearer ${token}`,
     }
@@ -181,15 +190,25 @@ const chatSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchChatData.pending, (state) => {
-        state.status = 'loading'
-        state.error = null
+      .addCase(fetchChatData.pending, (state, action) => {
+        const { silent } = normalizeFetchArg(action.meta.arg)
+        if (!silent) {
+          state.status = 'loading'
+          state.error = null
+        }
       })
       .addCase(fetchChatData.fulfilled, (state, action) => {
         state.status = 'succeeded'
+        const previousId = state.currentChannelId
         state.channels = action.payload.channels
         state.messages = action.payload.messages
-        state.currentChannelId = action.payload.channels[0]?.id ?? null
+        const channels = action.payload.channels
+        const keepSelection =
+          previousId != null
+          && channels.some((ch) => String(ch.id) === String(previousId))
+        state.currentChannelId = keepSelection
+          ? previousId
+          : channels[0]?.id ?? null
       })
       .addCase(fetchChatData.rejected, (state, action) => {
         state.status = 'failed'
