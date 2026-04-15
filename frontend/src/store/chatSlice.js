@@ -55,7 +55,8 @@ export const fetchChatData = createAsyncThunk(
         channels: extractList(channelsData, 'channels'),
         messages: extractList(messagesData, 'messages'),
       }
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.message)
     }
   },
@@ -77,7 +78,8 @@ export const fetchMessages = createAsyncThunk(
 
       const payload = await response.json()
       return extractList(payload, 'messages')
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.message)
     }
   },
@@ -90,7 +92,7 @@ export const sendMessage = createAsyncThunk(
       const response = await fetch('/api/v1/messages', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ body, channelId, username }),
@@ -102,7 +104,8 @@ export const sendMessage = createAsyncThunk(
 
       const payload = await response.json()
       return extractItem(payload, 'message')
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.message)
     }
   },
@@ -115,7 +118,7 @@ export const addChannel = createAsyncThunk(
       const response = await fetch('/api/v1/channels', {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name }),
@@ -127,7 +130,8 @@ export const addChannel = createAsyncThunk(
 
       const payload = await response.json()
       return extractItem(payload, 'channel')
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.message)
     }
   },
@@ -140,7 +144,7 @@ export const renameChannel = createAsyncThunk(
       const response = await fetch(`/api/v1/channels/${channelId}`, {
         method: 'PATCH',
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name }),
@@ -152,7 +156,8 @@ export const renameChannel = createAsyncThunk(
 
       const payload = await response.json()
       return extractItem(payload, 'channel')
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.message)
     }
   },
@@ -174,7 +179,8 @@ export const removeChannel = createAsyncThunk(
       }
 
       return { id: String(channelId) }
-    } catch (error) {
+    }
+    catch (error) {
       return rejectWithValue(error.message)
     }
   },
@@ -203,9 +209,8 @@ const chatSlice = createSlice({
         state.channels = action.payload.channels
         state.messages = action.payload.messages
         const channels = action.payload.channels
-        const keepSelection =
-          previousId != null
-          && channels.some((ch) => String(ch.id) === String(previousId))
+        const keepSelection = previousId != null
+          && channels.some(ch => String(ch.id) === String(previousId))
         state.currentChannelId = keepSelection
           ? previousId
           : channels[0]?.id ?? null
@@ -232,7 +237,7 @@ const chatSlice = createSlice({
       })
       .addCase(renameChannel.fulfilled, (state, action) => {
         const index = state.channels.findIndex(
-          (channel) => String(channel.id) === String(action.payload.id),
+          channel => String(channel.id) === String(action.payload.id),
         )
         if (index !== -1) {
           state.channels[index] = action.payload
@@ -244,10 +249,10 @@ const chatSlice = createSlice({
       .addCase(removeChannel.fulfilled, (state, action) => {
         const removedId = String(action.payload.id)
         state.channels = state.channels.filter(
-          (channel) => String(channel.id) !== removedId,
+          channel => String(channel.id) !== removedId,
         )
         state.messages = state.messages.filter(
-          (message) => String(message.channelId) !== removedId,
+          message => String(message.channelId) !== removedId,
         )
 
         if (String(state.currentChannelId) === removedId) {

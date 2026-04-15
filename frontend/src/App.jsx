@@ -68,7 +68,7 @@ const ModalLayout = ({ title, children, onClose }) => (
   <div className="modal-backdrop" onClick={onClose} role="presentation">
     <div
       className="modal-body"
-      onClick={(event) => event.stopPropagation()}
+      onClick={event => event.stopPropagation()}
       role="presentation"
     >
       <h3>{title}</h3>
@@ -107,7 +107,7 @@ const HomePage = () => {
   const token = getToken()
   const username = getUsername()
   const { channels, messages, currentChannelId, status, error } = useSelector(
-    (state) => state.chat,
+    state => state.chat,
   )
   const [dropdownChannelId, setDropdownChannelId] = useState(null)
   const [isAddModalOpen, setAddModalOpen] = useState(false)
@@ -188,10 +188,10 @@ const HomePage = () => {
   }, [error, t])
 
   const selectedChannelMessages = messages.filter(
-    (message) => String(message.channelId) === String(currentChannelId),
+    message => String(message.channelId) === String(currentChannelId),
   )
   const currentChannel = channels.find(
-    (channel) => String(channel.id) === String(currentChannelId),
+    channel => String(channel.id) === String(currentChannelId),
   )
   const addChannelSchema = useMemo(
     () => buildChannelSchema(channels, t),
@@ -228,7 +228,9 @@ const HomePage = () => {
             className="add-channel-button"
             onClick={() => setAddModalOpen(true)}
             aria-label={t('chat.addChannel')}
-          >+</button>
+          >
+            +
+          </button>
           <ul>
             {channels.map((channel) => (
               <li key={channel.id} className="channel-item">
@@ -241,7 +243,9 @@ const HomePage = () => {
                   }
                   onClick={() => dispatch(setCurrentChannel(channel.id))}
                 >
-                  # {filter.clean(channel.name)}
+                  #
+                  {' '}
+                  {filter.clean(channel.name)}
                 </button>
                 {channel.removable && (
                   <div className="channel-actions">
@@ -249,7 +253,7 @@ const HomePage = () => {
                       type="button"
                       className="channel-menu-button"
                       onClick={() => {
-                        setDropdownChannelId((prev) => (
+                        setDropdownChannelId(prev => (
                           prev === channel.id ? null : channel.id
                         ))
                       }}
@@ -294,7 +298,11 @@ const HomePage = () => {
           <div id="messages-box" className="messages-list" ref={messagesBoxRef}>
             {selectedChannelMessages.map((message) => (
               <p key={message.id}>
-                <strong>{message.username}: </strong>
+                <strong>
+                  {message.username}
+                  :
+                  {' '}
+                </strong>
                 {filter.clean(message.body)}
               </p>
             ))}
@@ -355,7 +363,8 @@ const HomePage = () => {
               )
               if (addChannel.fulfilled.match(resultAction)) {
                 toast.success(t('toast.channelCreated'))
-              } else {
+              }
+              else {
                 return
               }
               setSubmitting(false)
@@ -421,7 +430,8 @@ const HomePage = () => {
               )
               if (renameChannel.fulfilled.match(resultAction)) {
                 toast.success(t('toast.channelRenamed'))
-              } else {
+              }
+              else {
                 return
               }
               setSubmitting(false)
@@ -480,7 +490,8 @@ const HomePage = () => {
               )
               if (removeChannel.fulfilled.match(resultAction)) {
                 toast.success(t('toast.channelRemoved'))
-              } else {
+              }
+              else {
                 return
               }
               setSubmitting(false)
@@ -554,7 +565,8 @@ const LoginPage = () => {
             localStorage.setItem(tokenKey, data.token)
             localStorage.setItem(usernameKey, data.username)
             navigate('/')
-          } catch {
+          }
+          catch {
             setStatus(t('auth.invalidCredentials'))
             setSubmitting(false)
           }
@@ -590,7 +602,9 @@ const LoginPage = () => {
         )}
       </Formik>
       <p>
-        {t('auth.noAccount')} <Link to="/signup">{t('auth.signUpLink')}</Link>
+        {t('auth.noAccount')}
+        {' '}
+        <Link to="/signup">{t('auth.signUpLink')}</Link>
       </p>
     </main>
   )
@@ -658,7 +672,8 @@ const SignupPage = () => {
             localStorage.setItem(tokenKey, data.token)
             localStorage.setItem(usernameKey, data.username)
             navigate('/')
-          } catch {
+          }
+          catch {
             setStatus(t('auth.signupFailed'))
             setSubmitting(false)
           }
@@ -721,7 +736,9 @@ const SignupPage = () => {
         )}
       </Formik>
       <p>
-        {t('auth.hasAccount')} <Link to="/login">{t('auth.logInLink')}</Link>
+        {t('auth.hasAccount')}
+        {' '}
+        <Link to="/login">{t('auth.logInLink')}</Link>
       </p>
     </main>
   )

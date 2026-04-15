@@ -11,22 +11,24 @@ import rollbar from './rollbar'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {rollbar ? (
-      <RollbarProvider instance={rollbar}>
-        <ErrorBoundary>
+    {rollbar
+      ? (
+          <RollbarProvider instance={rollbar}>
+            <ErrorBoundary>
+              <Provider store={store}>
+                <BrowserRouter>
+                  <App />
+                </BrowserRouter>
+              </Provider>
+            </ErrorBoundary>
+          </RollbarProvider>
+        )
+      : (
           <Provider store={store}>
             <BrowserRouter>
               <App />
             </BrowserRouter>
           </Provider>
-        </ErrorBoundary>
-      </RollbarProvider>
-    ) : (
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
-    )}
+        )}
   </StrictMode>,
 )
