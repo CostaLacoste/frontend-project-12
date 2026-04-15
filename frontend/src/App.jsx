@@ -127,7 +127,7 @@ const HomePage = () => {
     }
 
     const timerId = setInterval(() => {
-      dispatch(fetchMessages(token))
+      dispatch(fetchChatData({ token, silent: true }))
     }, 1000)
 
     return () => {
