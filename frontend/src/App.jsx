@@ -327,11 +327,14 @@ const HomePage = () => {
               <form className="new-message-form" onSubmit={handleSubmit}>
                 <input
                   type="text"
+                  id="message-box"
                   name="body"
                   placeholder={t('chat.messagePlaceholder')}
-                  aria-label={t('chat.messagePlaceholder')}
+                  aria-label={t('chat.messageLabel')}
                   onChange={handleChange}
                   value={values.body}
+                  required
+                  autoFocus
                 />
                 <button type="submit">{t('chat.send')}</button>
               </form>

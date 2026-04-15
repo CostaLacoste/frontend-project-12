@@ -24,6 +24,7 @@ const resources = {
         remove: 'Удалить',
         title: 'Чат',
         titleWithChannel: 'Чат: # {{name}}',
+        messageLabel: 'Новое сообщение',
         messagePlaceholder: 'Введите сообщение...',
         send: 'Отправить',
       },
