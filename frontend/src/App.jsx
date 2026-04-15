@@ -233,9 +233,7 @@ const HomePage = () => {
             className="add-channel-button"
             onClick={() => setAddModalOpen(true)}
             aria-label={t('chat.addChannel')}
-          >
-            +
-          </button>
+          >+</button>
           <ul>
             {channels.map((channel) => (
               <li key={channel.id} className="channel-item">
