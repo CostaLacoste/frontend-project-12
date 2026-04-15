@@ -499,7 +499,7 @@ const HomePage = () => {
                   <button type="button" onClick={() => setRemoveModalChannel(null)}>
                     {t('common.cancel')}
                   </button>
-                  <button type="submit" disabled={isSubmitting}>
+                  <button type="submit" disabled={isSubmitting} autoFocus>
                     {t('common.remove')}
                   </button>
                 </div>
