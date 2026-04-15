@@ -128,7 +128,7 @@ const HomePage = () => {
 
     const timerId = setInterval(() => {
       dispatch(fetchMessages(token))
-    }, 5000)
+    }, 1000)
 
     return () => {
       clearInterval(timerId)
@@ -140,7 +140,11 @@ const HomePage = () => {
       return undefined
     }
 
-    const socket = io({ transports: ['websocket', 'polling'] })
+    const socket = io(window.location.origin, {
+      path: '/socket.io',
+      transports: ['websocket', 'polling'],
+      reconnection: true,
+    })
     const syncMessages = () => {
       dispatch(fetchMessages(token))
     }
