@@ -152,9 +152,13 @@ const HomePage = () => {
     const syncChat = () => {
       dispatch(fetchChatData({ token, silent: true }))
     }
+    const handleNewChannel = (channel) => {
+      dispatch(setCurrentChannel(channel.id))
+      syncChat()
+    }
 
     socket.on('newMessage', syncMessages)
-    socket.on('newChannel', syncChat)
+    socket.on('newChannel', handleNewChannel)
     socket.on('removeChannel', syncChat)
     socket.on('renameChannel', syncChat)
     socket.on('renameMessage', syncMessages)
