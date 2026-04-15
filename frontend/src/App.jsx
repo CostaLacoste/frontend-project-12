@@ -280,7 +280,7 @@ const HomePage = () => {
               ? t('chat.titleWithChannel', { name: filter.clean(currentChannel.name) })
               : t('chat.title')}
           </h2>
-          <div className="messages-list">
+          <div id="messages-box" className="messages-list">
             {selectedChannelMessages.map((message) => (
               <p key={message.id}>
                 <strong>{message.username}: </strong>
