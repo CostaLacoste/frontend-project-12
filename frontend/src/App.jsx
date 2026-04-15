@@ -493,7 +493,16 @@ const HomePage = () => {
             }}
           >
             {({ handleSubmit, isSubmitting }) => (
-              <form className="modal-form" onSubmit={handleSubmit}>
+              <form
+                className="modal-form"
+                onSubmit={handleSubmit}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter') {
+                    event.preventDefault()
+                    handleSubmit()
+                  }
+                }}
+              >
                 <p>{t('modals.removeConfirm')}</p>
                 <div className="modal-actions">
                   <button type="button" onClick={() => setRemoveModalChannel(null)}>
