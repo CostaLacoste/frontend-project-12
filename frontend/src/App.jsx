@@ -114,6 +114,7 @@ const HomePage = () => {
   const [renameModalChannel, setRenameModalChannel] = useState(null)
   const [removeModalChannel, setRemoveModalChannel] = useState(null)
   const lastErrorRef = useRef(null)
+  const messagesBoxRef = useRef(null)
 
   useEffect(() => {
     if (token) {
@@ -202,6 +203,14 @@ const HomePage = () => {
     [channels, renameModalChannel?.name, t],
   )
 
+  useEffect(() => {
+    if (!messagesBoxRef.current) {
+      return
+    }
+
+    messagesBoxRef.current.scrollTop = messagesBoxRef.current.scrollHeight
+  }, [selectedChannelMessages, currentChannelId])
+
   if (status === 'loading') {
     return <main className="chat-page">{t('chat.loading')}</main>
   }
@@ -284,7 +293,7 @@ const HomePage = () => {
               ? t('chat.titleWithChannel', { name: filter.clean(currentChannel.name) })
               : t('chat.title')}
           </h2>
-          <div id="messages-box" className="messages-list">
+          <div id="messages-box" className="messages-list" ref={messagesBoxRef}>
             {selectedChannelMessages.map((message) => (
               <p key={message.id}>
                 <strong>{message.username}: </strong>
