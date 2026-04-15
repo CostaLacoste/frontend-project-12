@@ -232,8 +232,9 @@ const HomePage = () => {
             type="button"
             className="add-channel-button"
             onClick={() => setAddModalOpen(true)}
+            aria-label={t('chat.addChannel')}
           >
-            {t('chat.addChannel')}
+            +
           </button>
           <ul>
             {channels.map((channel) => (
@@ -381,6 +382,8 @@ const HomePage = () => {
                   id="channelName"
                   name="name"
                   type="text"
+                  placeholder={t('modals.channelName')}
+                  aria-label={t('modals.channelName')}
                   onChange={handleChange}
                   value={values.name}
                   autoFocus

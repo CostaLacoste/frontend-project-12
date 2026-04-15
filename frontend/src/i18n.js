@@ -30,6 +30,7 @@ const resources = {
       },
       modals: {
         addChannelTitle: 'Добавить канал',
+        channelName: 'Имя канала',
         renameChannelTitle: 'Переименовать канал',
         removeChannelTitle: 'Удалить канал',
         removeConfirm: 'Вы уверены, что хотите удалить канал?',
